@@ -44,7 +44,6 @@ bool Triangle::onEdge(const Point &P) const {
     return (fabs(d1) < 1e-9 || fabs(d2) < 1e-9 || fabs(d3) < 1e-9);
 }
 
-
 void run() {
     Triangle t;
     cout << "Enter triangle coordinates: ";
@@ -81,23 +80,29 @@ void run() {
             }
             cout << "\n";
         } else {
-            double d1 = cross(t.A, t.B, p);
+            double d = cross(t.A, t.B, p);
 
-            if (fabs(d1) < 1e-9) {
-                cout << "Vector method: On line";
-            } else {
-                cout << "Vector method: Outside";
-            }
-            cout << "\n";
+            bool onLine = fabs(d) < 1e-9;
+
+            bool onSeg =
+                p.x >= min(min(t.A.x, t.B.x), t.C.x) &&
+                p.x <= max(max(t.A.x, t.B.x), t.C.x) &&
+                p.y >= min(min(t.A.y, t.B.y), t.C.y) &&
+                p.y <= max(max(t.A.y, t.B.y), t.C.y);
+
+            if (onLine && onSeg)
+                cout << "Vector method: On segment\n";
+            else
+                cout << "Vector method: Outside\n";
 
             double S1 = fabs((p.x*(t.B.y-t.C.y) + t.B.x*(t.C.y-p.y) + t.C.x*(p.y-t.B.y))/2.0);
 
-            if (S1 < 1e-9) {
-                cout << "Area method: On line";
-            } else {
-                cout << "Area method: Outside";
-            }
-            cout << "\n";
+            if (S1 < 1e-9 && onSeg)
+                cout << "Area method: On segment\n";
+            else
+                cout << "Area method: Outside\n";
         }
     }
 }
+
+
