@@ -44,6 +44,7 @@ bool Triangle::onEdge(const Point &P) const {
     return (fabs(d1) < 1e-9 || fabs(d2) < 1e-9 || fabs(d3) < 1e-9);
 }
 
+
 void run() {
     Triangle t;
     cout << "Enter triangle coordinates: ";
@@ -80,11 +81,23 @@ void run() {
             }
             cout << "\n";
         } else {
-            if (t.onEdge(p)) {
-                cout << "Point is on line\n";
+            double d1 = cross(t.A, t.B, p);
+
+            if (fabs(d1) < 1e-9) {
+                cout << "Vector method: On line";
             } else {
-                cout << "Point is outside line\n";
+                cout << "Vector method: Outside";
             }
+            cout << "\n";
+
+            double S1 = fabs((p.x*(t.B.y-t.C.y) + t.B.x*(t.C.y-p.y) + t.C.x*(p.y-t.B.y))/2.0);
+
+            if (S1 < 1e-9) {
+                cout << "Area method: On line";
+            } else {
+                cout << "Area method: Outside";
+            }
+            cout << "\n";
         }
     }
 }
