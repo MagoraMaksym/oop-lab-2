@@ -49,9 +49,10 @@ void run() {
     cout << "Enter triangle coordinates: ";
     cin >> t.A.x >> t.A.y >> t.B.x >> t.B.y >> t.C.x >> t.C.y;
 
-    if (t.area() < 1e-9) {
+    bool deg = (t.area() < 1e-9);
+
+    if (deg) {
         cout << "Degenerate triangle\n";
-        return;
     }
 
     int n;
@@ -62,20 +63,28 @@ void run() {
         Point p;
         cin >> p.x >> p.y;
 
-        if (t.contains(p)) {
-            cout << "Vector method: Inside";
-            if (t.onEdge(p)) cout << " (on edge)";
-        } else {
-            cout << "Vector method: Outside";
-        }
-        cout << "\n";
+        if (!deg) {
+            if (t.contains(p)) {
+                cout << "Vector method: Inside";
+                if (t.onEdge(p)) cout << " (on edge)";
+            } else {
+                cout << "Vector method: Outside";
+            }
+            cout << "\n";
 
-        if (t.containsArea(p)) {
-            cout << "Area method: Inside";
-            if (t.onEdge(p)) cout << " (on edge)";
+            if (t.containsArea(p)) {
+                cout << "Area method: Inside";
+                if (t.onEdge(p)) cout << " (on edge)";
+            } else {
+                cout << "Area method: Outside";
+            }
+            cout << "\n";
         } else {
-            cout << "Area method: Outside";
+            if (t.onEdge(p)) {
+                cout << "Point is on line\n";
+            } else {
+                cout << "Point is outside line\n";
+            }
         }
-        cout << "\n";
     }
 }
