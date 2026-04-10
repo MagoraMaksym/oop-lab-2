@@ -8,6 +8,10 @@ double cross(Point A, Point B, Point P) {
     return (B.x - A.x)*(P.y - A.y) - (B.y - A.y)*(P.x - A.x);
 }
 
+double dist2(Point a, Point b) {
+    return (a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y);
+}
+
 double Triangle::area() const {
     return fabs((A.x*(B.y-C.y) + B.x*(C.y-A.y) + C.x*(A.y-B.y))/2.0);
 }
@@ -61,6 +65,58 @@ void run() {
 
     for (int i = 0; i < n; i++) {
         Point p;
+        cin >> p.x >> p.y;
+
+        if (!deg) {
+            if (t.contains(p)) {
+                cout << "Vector method: Inside";
+                if (t.onEdge(p)) cout << " (on edge)";
+            } else {
+                cout << "Vector method: Outside";
+            }
+            cout << "\n";
+
+            if (t.containsArea(p)) {
+                cout << "Area method: Inside";
+                if (t.onEdge(p)) cout << " (on edge)";
+            } else {
+                cout << "Area method: Outside";
+            }
+            cout << "\n";
+        } else {
+            // 🔥 знайти найдовший відрізок
+            Point p1 = t.A, p2 = t.B;
+
+            if (dist2(t.A, t.C) > dist2(p1, p2)) {
+                p1 = t.A; p2 = t.C;
+            }
+            if (dist2(t.B, t.C) > dist2(p1, p2)) {
+                p1 = t.B; p2 = t.C;
+            }
+
+            double d = cross(p1, p2, p);
+
+            bool onLine = fabs(d) < 1e-9;
+            bool onSeg =
+                p.x >= min(p1.x, p2.x) &&
+                p.x <= max(p1.x, p2.x) &&
+                p.y >= min(p1.y, p2.y) &&
+                p.y <= max(p1.y, p2.y);
+
+            if (onLine && onSeg)
+                cout << "Vector method: On segment\n";
+            else
+                cout << "Vector method: Outside\n";
+
+            double S1 = fabs((p.x*(p2.y-p1.y) + p2.x*(p1.y-p.y) + p1.x*(p.y-p2.y))/2.0);
+
+            if (S1 < 1e-9 && onSeg)
+                cout << "Area method: On segment\n";
+            else
+                cout << "Area method: Outside\n";
+        }
+    }
+}        Point p;
         cin >> p.x >> p.y;
 
         if (!deg) {
