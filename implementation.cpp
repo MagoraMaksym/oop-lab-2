@@ -84,7 +84,7 @@ void run() {
             }
             cout << "\n";
         } else {
-            // 🔥 знайти найдовший відрізок
+
             Point p1 = t.A, p2 = t.B;
 
             if (dist2(t.A, t.C) > dist2(p1, p2)) {
